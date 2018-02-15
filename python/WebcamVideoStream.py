@@ -68,12 +68,12 @@ class WebcamVideoStream(object):
             (self.grabbed, self.rawImage) = self.video.read()
             img = self.rawImage.copy()
             # draw rectangles around the people
-            draw_detections(img, self.contours)
+            # draw_detections(img, self.contours)
             # visually show the counters
-            cv2.putText(img, "Entered: " + str(entered), (10, 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-            cv2.putText(img, "Exited: " + str(exited), (10, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            # cv2.putText(img, "Entered: " + str(entered), (10, 20),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            # cv2.putText(img, "Exited: " + str(exited), (10, 50),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
             img = self.find_people(img)
             ret, jpeg = cv2.imencode('.jpg', img)
