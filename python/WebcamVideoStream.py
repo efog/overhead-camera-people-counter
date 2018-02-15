@@ -51,9 +51,9 @@ class WebcamVideoStream(object):
         t = Thread(target=self.update, args=())
         t.daemon = True
         t.start()
-        t2 = Thread(target=self.updateContours, args=())
-        t2.daemon = True
-        t2.start()
+        # t2 = Thread(target=self.updateContours, args=())
+        # t2.daemon = True
+        # t2.start()
         return self
 
     def update(self):
