@@ -117,7 +117,7 @@ class WebcamVideoStream(object):
         for x, y, w, h in rects:
             new = True
             xCenter = x + w/2
-                yCenter = y + h/2
+            yCenter = y + h/2
             inActiveZone = xCenter in range(self.rangeLeft, self.rangeRight)
             for index, p in enumerate(persons):
                 dist = math.sqrt((xCenter - p.getX())**2 +
