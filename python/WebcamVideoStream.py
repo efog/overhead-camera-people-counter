@@ -15,6 +15,7 @@ pid = 1
 entered = 0
 exited = 0
 
+
 def draw_detections(img, rects, thickness=2):
     for x, y, w, h in rects:
         pad_w, pad_h = int(0.15*w), int(0.05*h)
