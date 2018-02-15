@@ -91,17 +91,17 @@ class WebcamVideoStream(object):
             self.find_people(img)
             total = datetime.datetime.now()
             frameDelta = cv2.absdiff(self.firstFrame, img)
-            ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
-            (_, allContours, _) = cv2.findContours(
-                thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            personContours = []
-            for c in allContours:
-                # only look at contours larger than a certain size
-                if cv2.contourArea(c) > personSize:
-                    personContours.append(cv2.boundingRect(c))
-            self.contours = personContours
-            # track the people in the frame
-            self.people_tracking(self.contours)
+            # ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
+            # (_, allContours, _) = cv2.findContours(
+            #     thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # personContours = []
+            # for c in allContours:
+            #     # only look at contours larger than a certain size
+            #     if cv2.contourArea(c) > personSize:
+            #         personContours.append(cv2.boundingRect(c))
+            # self.contours = personContours
+            # # track the people in the frame
+            # self.people_tracking(self.contours)
 
     def readDetections(self):
         # return the frame with people detections
