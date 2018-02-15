@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response
-import WebcamVideoStream
+from WebcamVideoStream import WebcamVideoStream
 import time
  
 app = Flask(__name__)
