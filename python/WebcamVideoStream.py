@@ -88,7 +88,7 @@ class WebcamVideoStream(object):
             # get the current frame and look for people
             total = datetime.datetime.now()
             img = cv2.cvtColor(self.rawImage, cv2.COLOR_BGR2GRAY)
-            self.find_people(img)
+            img = self.find_people(img)
             total = datetime.datetime.now()
             frameDelta = cv2.absdiff(self.firstFrame, img)
             # ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
