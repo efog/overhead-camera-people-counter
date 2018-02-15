@@ -25,7 +25,7 @@ def draw_detections(img, rects, thickness=2):
 class WebcamVideoStream(object):
     def __init__(self):
         self.video = cv2.VideoCapture(
-            'video.mp4')
+            'video2.mp4')
         self.w = self.video.get(3)  # CV_CAP_PROP_FRAME_WIDTH
         self.h = self.video.get(4)  # CV_CAP_PROP_FRAME_HEIGHT
         self.rangeLeft = int(1*(self.w/6))
