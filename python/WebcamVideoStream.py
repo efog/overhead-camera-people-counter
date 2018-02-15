@@ -74,6 +74,8 @@ class WebcamVideoStream(object):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
             cv2.putText(img, "Exited: " + str(exited), (10, 50),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+
+            img = self.find_people(img)
             ret, jpeg = cv2.imencode('.jpg', img)
             self.frameDetections = jpeg.tobytes()
 
@@ -88,20 +90,19 @@ class WebcamVideoStream(object):
             # get the current frame and look for people
             total = datetime.datetime.now()
             img = cv2.cvtColor(self.rawImage, cv2.COLOR_BGR2GRAY)
-            img = self.find_people(img)
             total = datetime.datetime.now()
             frameDelta = cv2.absdiff(self.firstFrame, img)
-            # ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
-            # (_, allContours, _) = cv2.findContours(
-            #     thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            # personContours = []
-            # for c in allContours:
-            #     # only look at contours larger than a certain size
-            #     if cv2.contourArea(c) > personSize:
-            #         personContours.append(cv2.boundingRect(c))
-            # self.contours = personContours
-            # # track the people in the frame
-            # self.people_tracking(self.contours)
+            ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
+            (_, allContours, _) = cv2.findContours(
+                thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            personContours = []
+            for c in allContours:
+                # only look at contours larger than a certain size
+                if cv2.contourArea(c) > personSize:
+                    personContours.append(cv2.boundingRect(c))
+            self.contours = personContours
+            # track the people in the frame
+            self.people_tracking(self.contours)
 
     def readDetections(self):
         # return the frame with people detections
