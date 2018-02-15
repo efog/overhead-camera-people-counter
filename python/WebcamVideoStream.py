@@ -88,6 +88,7 @@ class WebcamVideoStream(object):
             # get the current frame and look for people
             total = datetime.datetime.now()
             img = cv2.cvtColor(self.rawImage, cv2.COLOR_BGR2GRAY)
+            self.find_people(img)
             total = datetime.datetime.now()
             frameDelta = cv2.absdiff(self.firstFrame, img)
             ret, thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)
@@ -109,6 +110,37 @@ class WebcamVideoStream(object):
     def stop(self):
         # indicate that the thread should be stopped
         self.stopped = True
+
+    def inside(self, r, q):
+        rx, ry, rw, rh = r
+        qx, qy, qw, qh = q
+        return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
+
+    def find_people(self, img):
+        hog = cv2.HOGDescriptor()
+        hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+        
+        if img is None:
+            return None
+        #  print('Failed to load image file:', fn)
+        #  continue
+        # except:
+        #  print('loading error')
+        #  continue
+
+        found, w = hog.detectMultiScale(
+            img, winStride=(10, 10), padding=(32, 32), scale=1.05)
+        found_filtered = []
+        for ri, r in enumerate(found):
+            for qi, q in enumerate(found):
+                if ri != qi and self.inside(r, q):
+                    break
+                else:
+                    found_filtered.append(r)
+                draw_detections(img, found)
+                draw_detections(img, found_filtered, 3)
+                print('%d (%d) found' % (len(found_filtered), len(found)))
+        return img
 
     def people_tracking(self, rects):
         global pid
