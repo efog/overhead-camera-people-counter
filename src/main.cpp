@@ -11,11 +11,11 @@ int main(int argc, char *argv[])
     VideoCapturePeopleCounter *counter = new VideoCapturePeopleCounter(argv[1]);
     if (argc == 3 && argv[2] == "v")
     {
-        counter->delegate = new ConsoleController(counter);
+        counter->delegate = new WindowController(counter);
     }
     else
     {
-        counter->delegate = new WindowController(counter);
+        counter->delegate = new ConsoleController(counter);
     }
     counter->setRefLineY(120);
     counter->start();
