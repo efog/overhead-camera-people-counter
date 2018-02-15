@@ -42,6 +42,8 @@ class WebcamVideoStream(object):
         # initialize the variable used to indicate if the thread should
         # be stopped
         self.stopped = False
+        self.face_cascade = cv2.CascadeClassifier(
+            'haarcascade_frontalface_default.xml')
 
     def __del__(self):
         self.video.release()
@@ -75,7 +77,9 @@ class WebcamVideoStream(object):
             # cv2.putText(img, "Exited: " + str(exited), (10, 50),
             #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
-            img = self.find_people(img)
+            # img = self.find_people(img)
+            self.find_faces(img)
+
             ret, jpeg = cv2.imencode('.jpg', img)
             self.frameDetections = jpeg.tobytes()
 
@@ -117,10 +121,16 @@ class WebcamVideoStream(object):
         qx, qy, qw, qh = q
         return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
 
+    def find_faces(self, img):
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
+        for (x, y, w, h) in faces:
+            cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
     def find_people(self, img):
         hog = cv2.HOGDescriptor()
         hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-        
+
         if img is None:
             return None
         #  print('Failed to load image file:', fn)
